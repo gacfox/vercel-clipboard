@@ -67,9 +67,16 @@ const MessagesPage = () => {
       <div
         className={`grid grid-cols-12 gap-2 my-2 ${loading ? "hidden" : ""}`}
       >
-        <div className="flex justify-start col-span-12">
+        <div className="flex justify-center col-span-12">
           <AddMessageModal fetchMessages={fetchMessages} />
           <AddFileModal fetchMessages={fetchMessages} />
+          <Button
+            color="primary"
+            className="w-[110px] ml-2"
+            onClick={fetchMessages}
+          >
+            <span className="icon-loop2"></span> Refresh
+          </Button>
         </div>
         {messages?.length === 0 ? (
           <div className="col-span-12 text-center text-gray-400">
