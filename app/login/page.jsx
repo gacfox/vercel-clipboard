@@ -26,7 +26,9 @@ const LoginPage = () => {
   }, []);
 
   const fetchAllowRegister = async () => {
-    const response = await fetch("/api/register/allow");
+    const response = await fetch(
+      "/api/register/allow?t=" + new Date().getTime().toString()
+    );
     const data = await response.json();
     if (data?.data) {
       setAllow(data.data);

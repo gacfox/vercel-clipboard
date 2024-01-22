@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { get } from "@vercel/edge-config";
 
+export const revalidate = 60;
+
 export const GET = async () => {
   try {
     let allow = await get("allowRegister");
