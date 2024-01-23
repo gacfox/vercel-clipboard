@@ -8,7 +8,6 @@ import {
   CardFooter,
   CardHeader,
   Divider,
-  Spinner,
 } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import AddMessageModal from "@/app/_components/AddMessageModal";
@@ -16,6 +15,7 @@ import DeleteMessage from "@/app/_components/DeleteMessage";
 import ViewMessage from "@/app/_components/ViewMessage";
 import CopyMessage from "@/app/_components/CopyMessage";
 import AddFileModal from "@/app/_components/AddFileModal";
+import MessageSkeleton from "./_components/MessageSkeleton";
 
 const formatDate = (timestamp) => {
   let date = new Date(timestamp);
@@ -61,12 +61,7 @@ const MessagesPage = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <div className={`flex justify-center py-4 ${loading ? "" : "hidden"}`}>
-        <Spinner />
-      </div>
-      <div
-        className={`grid grid-cols-12 gap-2 my-2 ${loading ? "hidden" : ""}`}
-      >
+      <div className="grid grid-cols-12 gap-2 my-2">
         <div className="flex justify-center col-span-12">
           <AddMessageModal fetchMessages={fetchMessages} />
           <AddFileModal fetchMessages={fetchMessages} />
@@ -78,62 +73,70 @@ const MessagesPage = () => {
             <span className="icon-loop2"></span> Refresh
           </Button>
         </div>
-        {messages?.length === 0 ? (
-          <div className="col-span-12 text-center text-gray-400">
-            Click Message or File button to push a message
+        {loading ? (
+          <div className="col-span-12">
+            <MessageSkeleton />
           </div>
-        ) : null}
-        {messages.map((message, index) => {
-          const timestamp = new Date(message.update_time);
-          const readableDate = formatDate(timestamp);
-          return (
-            <Card key={index} className="col-span-12" isHoverable={true}>
-              {message.type === "text" ? (
-                <>
-                  <CardHeader>
-                    <div className="font-bold text-lg">Text</div>
-                    <div className="flex-grow"></div>
-                    <ViewMessage messageContent={message.content} />
-                    <CopyMessage messageContent={message.content} />
-                    <DeleteMessage
-                      messageId={message.message_id}
-                      fetchMessages={fetchMessages}
-                    />
-                  </CardHeader>
-                  <Divider />
-                  <CardBody>
-                    <div className="line-clamp-3">{message.content}</div>
-                  </CardBody>
-                </>
-              ) : (
-                <>
-                  <CardHeader>
-                    <div className="font-bold text-lg">File</div>
-                    <div className="flex-grow"></div>
-                    <Button
-                      color="primary"
-                      size="sm"
-                      onClick={() => {
-                        location.href = message.url;
-                      }}
-                    >
-                      <span className="icon-download3"></span> Download
-                    </Button>
-                    <DeleteMessage
-                      messageId={message.message_id}
-                      fetchMessages={fetchMessages}
-                    />
-                  </CardHeader>
-                  <Divider />
-                  <CardBody>{message.filename}</CardBody>
-                </>
-              )}
-              <CardFooter>
-                <div className="text-gray-400">{readableDate}</div>
-              </CardFooter>
-            </Card>
-          );
-        })}
+        ) : (
+          <>
+            {messages?.length === 0 ? (
+              <div className="col-span-12 text-center text-gray-400">
+                Click Message or File button to push a message
+              </div>
+            ) : null}
+            {messages.map((message, index) => {
+              const timestamp = new Date(message.update_time);
+              const readableDate = formatDate(timestamp);
+              return (
+                <Card key={index} className="col-span-12" isHoverable={true}>
+                  {message.type === "text" ? (
+                    <>
+                      <CardHeader>
+                        <div className="font-bold text-lg">Text</div>
+                        <div className="flex-grow"></div>
+                        <ViewMessage messageContent={message.content} />
+                        <CopyMessage messageContent={message.content} />
+                        <DeleteMessage
+                          messageId={message.message_id}
+                          fetchMessages={fetchMessages}
+                        />
+                      </CardHeader>
+                      <Divider />
+                      <CardBody>
+                        <div className="line-clamp-3">{message.content}</div>
+                      </CardBody>
+                    </>
+                  ) : (
+                    <>
+                      <CardHeader>
+                        <div className="font-bold text-lg">File</div>
+                        <div className="flex-grow"></div>
+                        <Button
+                          color="primary"
+                          size="sm"
+                          onClick={() => {
+                            location.href = message.url;
+                          }}
+                        >
+                          <span className="icon-download3"></span> Download
+                        </Button>
+                        <DeleteMessage
+                          messageId={message.message_id}
+                          fetchMessages={fetchMessages}
+                        />
+                      </CardHeader>
+                      <Divider />
+                      <CardBody>{message.filename}</CardBody>
+                    </>
+                  )}
+                  <CardFooter>
+                    <div className="text-gray-400">{readableDate}</div>
+                  </CardFooter>
+                </Card>
+              );
+            })}
+          </>
+        )}
       </div>
     </div>
   );
