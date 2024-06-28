@@ -8,6 +8,7 @@ import {
   CardFooter,
   CardHeader,
   Divider,
+  Spinner,
 } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import AddMessageModal from "@/app/_components/AddMessageModal";
@@ -15,7 +16,6 @@ import DeleteMessage from "@/app/_components/DeleteMessage";
 import ViewMessage from "@/app/_components/ViewMessage";
 import CopyMessage from "@/app/_components/CopyMessage";
 import AddFileModal from "@/app/_components/AddFileModal";
-import MessageSkeleton from "./_components/MessageSkeleton";
 
 const formatDate = (timestamp) => {
   let date = new Date(timestamp);
@@ -59,6 +59,21 @@ const MessagesPage = () => {
     fetchMessages();
   }, []);
 
+  const [vh, setVh] = useState("100vh");
+  useEffect(() => {
+    let minHeight = window.innerHeight - 80;
+    minHeight < 100 ? (minHeight = 100) : null;
+    setVh(minHeight + "px");
+    window.addEventListener("resize", () => {
+      setVh(minHeight + "px");
+    });
+    return () => {
+      window.removeEventListener("resize", () => {
+        setVh(minHeight + "px");
+      });
+    };
+  }, []);
+
   return (
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-12 gap-2 my-2">
@@ -74,8 +89,11 @@ const MessagesPage = () => {
           </Button>
         </div>
         {loading ? (
-          <div className="col-span-12">
-            <MessageSkeleton />
+          <div
+            className="col-span-12 flex justify-center align-middle"
+            style={{ minHeight: vh }}
+          >
+            <Spinner label="Loading..." size="lg" />
           </div>
         ) : (
           <>
