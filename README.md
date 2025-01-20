@@ -1,16 +1,23 @@
 # Vercel Clipboard
 
-This is a simple cloud clipboard project that can be used to upload and share text messages and files between devices. The project is developed with Next.js 14 and deployed on Vercel. It's serverside relies on Vercel's KV Database, Postgre Database, Blob Store and Edge Config Store to persist data and configurations.
+Vercel Clipboard is a simple web-based application that allows you to share text and files across multiple devices.
 
-![](doc/1.png)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fgacfox%2Fvercel-clipboard)
 
-## Deploy on Vercel
+## Screenshots
 
-First, create a project on Vercel and link KV Database, Postgre Database, Blob Store and Edge Config Store with it. Then fork this repository and link it with Vercel project and it will works in a few seconds.
+![](doc/screenshot.webp)
 
-## Running locally
+## Requirements
 
-It's also needed to create Vercel project and link it to databases and your git repository first before running this project locally. Then run these following commands to install dependencies and start a development server.
+- Vercel blob store integration for uploading and downloading files
+- Vercel KV integration for caching session data
+- Vercel postgres integration for persisting structured data
+- Vercel edge config store integration for configurations
+
+## Local Development
+
+Fork and clone this repository. Before starting development, you need to create a vercel project, link it to your database, and connect it to the project. Once everything is ready, run the following commands.
 
 ```bash
 npm install && npx vercel env pull .env.development.local && npm run dev
@@ -18,4 +25,4 @@ npm install && npx vercel env pull .env.development.local && npm run dev
 
 ## Configurations
 
-This project is designed for multi users. If you want others to register, you can configure `allowResigter` as `true` in Edge Config Store then the sign up page will be enabled.
+This project is designed for multi users. If you want others to register, you can configure `allowRegister` as `true` in edge config store then the sign up page will be enabled.
