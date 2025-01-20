@@ -16,6 +16,7 @@ import DeleteMessage from "@/app/_components/DeleteMessage";
 import ViewMessage from "@/app/_components/ViewMessage";
 import CopyMessage from "@/app/_components/CopyMessage";
 import AddFileModal from "@/app/_components/AddFileModal";
+import AddFileLayer from "@/app/_components/AddFileLayer";
 
 const formatDate = (timestamp) => {
   let date = new Date(timestamp);
@@ -36,6 +37,7 @@ const MessagesPage = () => {
 
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
+  const [showAddFileLayer, setShowAddFileLayer] = useState(false);
 
   const fetchMessages = async () => {
     setLoading(true);
@@ -61,6 +63,9 @@ const MessagesPage = () => {
 
   const [vh, setVh] = useState("100vh");
   useEffect(() => {
+    const handleBodyDragEnter = () => setShowAddFileLayer(true);
+    window.addEventListener("dragenter", handleBodyDragEnter);
+
     let minHeight = window.innerHeight - 80;
     minHeight < 100 ? (minHeight = 100) : null;
     setVh(minHeight + "px");
@@ -75,88 +80,93 @@ const MessagesPage = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="grid grid-cols-12 gap-2 my-2">
-        <div className="flex justify-center col-span-12">
-          <AddMessageModal fetchMessages={fetchMessages} />
-          <AddFileModal fetchMessages={fetchMessages} />
-          <Button
-            color="primary"
-            className="w-[110px] ml-2"
-            onClick={fetchMessages}
-          >
-            <span className="icon-loop2"></span> Refresh
-          </Button>
-        </div>
-        {loading ? (
-          <div
-            className="col-span-12 flex justify-center align-middle"
-            style={{ minHeight: vh }}
-          >
-            <Spinner label="Loading..." size="lg" />
+    <>
+      {showAddFileLayer && (
+        <AddFileLayer hideLayer={() => setShowAddFileLayer(false)} fetchMessages={fetchMessages} />
+      )}
+      <div className="container mx-auto px-4 overflow-hidden">
+        <div className="grid grid-cols-12 gap-2 my-2">
+          <div className="flex justify-center col-span-12">
+            <AddMessageModal fetchMessages={fetchMessages} />
+            <AddFileModal fetchMessages={fetchMessages} />
+            <Button
+              color="primary"
+              className="w-[110px] ml-2"
+              onClick={fetchMessages}
+            >
+              <span className="icon-loop2"></span> Refresh
+            </Button>
           </div>
-        ) : (
-          <>
-            {messages?.length === 0 ? (
-              <div className="col-span-12 text-center text-gray-400">
-                Click Message or File button to push a message
-              </div>
-            ) : null}
-            {messages.map((message, index) => {
-              const timestamp = new Date(message.update_time);
-              const readableDate = formatDate(timestamp);
-              return (
-                <Card key={index} className="col-span-12" isHoverable={true}>
-                  {message.type === "text" ? (
-                    <>
-                      <CardHeader>
-                        <div className="font-bold text-lg">Text</div>
-                        <div className="flex-grow"></div>
-                        <ViewMessage messageContent={message.content} />
-                        <CopyMessage messageContent={message.content} />
-                        <DeleteMessage
-                          messageId={message.message_id}
-                          fetchMessages={fetchMessages}
-                        />
-                      </CardHeader>
-                      <Divider />
-                      <CardBody>
-                        <div className="line-clamp-3">{message.content}</div>
-                      </CardBody>
-                    </>
-                  ) : (
-                    <>
-                      <CardHeader>
-                        <div className="font-bold text-lg">File</div>
-                        <div className="flex-grow"></div>
-                        <Button
-                          color="primary"
-                          size="sm"
-                          onClick={() => {
-                            location.href = message.url;
-                          }}
-                        >
-                          <span className="icon-download3"></span> Download
-                        </Button>
-                        <DeleteMessage
-                          messageId={message.message_id}
-                          fetchMessages={fetchMessages}
-                        />
-                      </CardHeader>
-                      <Divider />
-                      <CardBody>{message.filename}</CardBody>
-                    </>
-                  )}
-                  <CardFooter>
-                    <div className="text-gray-400">{readableDate}</div>
-                  </CardFooter>
-                </Card>
-              );
-            })}
-          </>
-        )}
+          {loading ? (
+            <div
+              className="col-span-12 flex justify-center align-middle"
+              style={{ minHeight: vh }}
+            >
+              <Spinner label="Loading..." size="lg" />
+            </div>
+          ) : (
+            <>
+              {messages?.length === 0 ? (
+                <div className="col-span-12 text-center text-gray-400">
+                  Click Message or File button to push a message
+                </div>
+              ) : null}
+              {messages.map((message, index) => {
+                const timestamp = new Date(message.update_time);
+                const readableDate = formatDate(timestamp);
+                return (
+                  <Card key={index} className="col-span-12" isHoverable={true}>
+                    {message.type === "text" ? (
+                      <>
+                        <CardHeader>
+                          <div className="font-bold text-lg">Text</div>
+                          <div className="flex-grow"></div>
+                          <ViewMessage messageContent={message.content} />
+                          <CopyMessage messageContent={message.content} />
+                          <DeleteMessage
+                            messageId={message.message_id}
+                            fetchMessages={fetchMessages}
+                          />
+                        </CardHeader>
+                        <Divider />
+                        <CardBody>
+                          <div className="line-clamp-3">{message.content}</div>
+                        </CardBody>
+                      </>
+                    ) : (
+                      <>
+                        <CardHeader>
+                          <div className="font-bold text-lg">File</div>
+                          <div className="flex-grow"></div>
+                          <Button
+                            color="primary"
+                            size="sm"
+                            onClick={() => {
+                              location.href = message.url;
+                            }}
+                          >
+                            <span className="icon-download3"></span> Download
+                          </Button>
+                          <DeleteMessage
+                            messageId={message.message_id}
+                            fetchMessages={fetchMessages}
+                          />
+                        </CardHeader>
+                        <Divider />
+                        <CardBody>{message.filename}</CardBody>
+                      </>
+                    )}
+                    <CardFooter>
+                      <div className="text-gray-400">{readableDate}</div>
+                    </CardFooter>
+                  </Card>
+                );
+              })}
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

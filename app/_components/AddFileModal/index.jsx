@@ -38,7 +38,7 @@ const AddFileModal = ({ fetchMessages }) => {
     setSubmitLoading(false);
     if (data?.code === "200") {
       onClose();
-      fetchMessages();
+      await fetchMessages();
     } else {
       if (data.code === "403") {
         router.push("/login");

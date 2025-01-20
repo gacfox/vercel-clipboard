@@ -9,7 +9,6 @@ export async function POST(request) {
       body,
       request,
       onBeforeGenerateToken: async (pathname, clientPayload) => {
-        console.log(clientPayload);
         const { token } = JSON.parse(clientPayload);
         if (token) {
           const user = await kv.get(`token-${token}`);
