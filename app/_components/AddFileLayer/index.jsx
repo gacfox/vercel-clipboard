@@ -17,14 +17,14 @@ const AddFileLayer = ({ hideLayer, fetchMessages }) => {
       access: "public",
       handleUploadUrl: "/api/files/upload",
       clientPayload: JSON.stringify({
-        token: localStorage.getItem("token"),
+        "X-Session-ID": localStorage.getItem("token"),
       }),
     });
     const response = await fetch("/api/messages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Token: localStorage.getItem("token"),
+        "X-Session-ID": localStorage.getItem("token"),
       },
       body: JSON.stringify({
         type: "file",

@@ -41,7 +41,7 @@ export const POST = async (request) => {
             ? parseInt(process.env.TOKEN_EXPIRES_SECONDS)
             : 31536000,
         });
-        response.headers.set("Token", uuid);
+        response.headers.set("X-Session-ID", uuid);
         return response;
       }
     } catch (error) {

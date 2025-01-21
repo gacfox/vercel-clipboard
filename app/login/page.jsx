@@ -52,7 +52,7 @@ const LoginPage = () => {
     const data = await response.json();
     setLoginButtonLoading(false);
     if (data?.code === "200") {
-      const token = response.headers.get("Token");
+      const token = response.headers.get("X-Session-ID");
       localStorage.setItem("token", token);
       router.push("/");
     } else {

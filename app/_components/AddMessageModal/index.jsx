@@ -35,7 +35,7 @@ const AddMessageModal = ({ fetchMessages }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Token: localStorage.getItem("token"),
+        "X-Session-ID": localStorage.getItem("token"),
       },
       body: JSON.stringify({
         type: "text",
@@ -58,7 +58,7 @@ const AddMessageModal = ({ fetchMessages }) => {
   return (
     <>
       <Button color="primary" className="w-[110px]" onClick={onOpen}>
-      <span className="icon-plus"></span> Message
+        <span className="icon-plus"></span> Message
       </Button>
       <Modal
         isOpen={isOpen}

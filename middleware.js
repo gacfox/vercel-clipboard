@@ -14,7 +14,7 @@ export const middleware = async (request) => {
 
   // Login check
   let user;
-  let token = headers().get("Token");
+  let token = headers().get("X-Session-ID");
   if (token) {
     user = await kv.get(`token-${token}`);
     if (!user) {

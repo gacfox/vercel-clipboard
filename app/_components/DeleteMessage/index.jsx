@@ -13,7 +13,7 @@ const DeleteMessage = ({ messageId, fetchMessages }) => {
     const response = await fetch(`/api/messages/${messageId}`, {
       method: "DELETE",
       headers: {
-        Token: localStorage.getItem("token"),
+        "X-Session-ID": localStorage.getItem("token"),
       },
     });
     const data = await response.json();

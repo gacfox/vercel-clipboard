@@ -26,7 +26,7 @@ const AddFileModal = ({ fetchMessages }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Token: localStorage.getItem("token"),
+        "X-Session-ID": localStorage.getItem("token"),
       },
       body: JSON.stringify({
         type: "file",
@@ -56,7 +56,7 @@ const AddFileModal = ({ fetchMessages }) => {
         access: "public",
         handleUploadUrl: "/api/files/upload",
         clientPayload: JSON.stringify({
-          token: localStorage.getItem("token"),
+          "X-Session-ID": localStorage.getItem("token"),
         }),
       });
       await submitMessage(blob);

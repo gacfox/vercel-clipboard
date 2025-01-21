@@ -43,7 +43,7 @@ const MessagesPage = () => {
     setLoading(true);
     const response = await fetch("/api/messages", {
       headers: {
-        Token: localStorage.getItem("token"),
+        "X-Session-ID": localStorage.getItem("token"),
       },
     });
     const data = await response.json();
@@ -82,7 +82,10 @@ const MessagesPage = () => {
   return (
     <>
       {showAddFileLayer && (
-        <AddFileLayer hideLayer={() => setShowAddFileLayer(false)} fetchMessages={fetchMessages} />
+        <AddFileLayer
+          hideLayer={() => setShowAddFileLayer(false)}
+          fetchMessages={fetchMessages}
+        />
       )}
       <div className="container mx-auto px-4 overflow-hidden">
         <div className="grid grid-cols-12 gap-2 my-2">

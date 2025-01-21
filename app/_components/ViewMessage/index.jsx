@@ -16,14 +16,16 @@ const ViewMessage = ({ messageContent }) => {
   return (
     <>
       <Button color="default" size="sm" onClick={onOpen}>
-      <span className="icon-eye"></span> View
+        <span className="icon-eye"></span> View
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader>View</ModalHeader>
-              <ModalBody className="max-h-96 overflow-auto">{messageContent}</ModalBody>
+              <ModalBody className="max-h-96 overflow-auto">
+                {messageContent}
+              </ModalBody>
               <ModalFooter>
                 <Button color="default" onClick={onClose}>
                   Close

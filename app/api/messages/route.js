@@ -57,7 +57,8 @@ export const POST = async (request) => {
 
     // Add message record to database
     await sql`insert into t_messages (type, content, filename, url, user_id) values (${type}, ${content}, ${filename}, ${url}, ${user.user_id})`;
-    const { rows } = await sql`select count(*) from t_messages where user_id = ${user.user_id}`;
+    const { rows } =
+      await sql`select count(*) from t_messages where user_id = ${user.user_id}`;
     if (rows[0].count > 25) {
       const { rows: toDeleteRows } =
         await sql`select * from t_messages where user_id = ${user.user_id} and message_id not in (select message_id from t_messages where user_id = ${user.user_id} order by update_time desc limit 25)`;
