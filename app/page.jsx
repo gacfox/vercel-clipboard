@@ -17,6 +17,8 @@ import ViewMessage from "@/app/_components/ViewMessage";
 import CopyMessage from "@/app/_components/CopyMessage";
 import AddFileModal from "@/app/_components/AddFileModal";
 import AddFileLayer from "@/app/_components/AddFileLayer";
+import DownloadFile from "@/app/_components/DownloadFile";
+import ShareModal from "@/app/_components/ShareModal";
 
 const formatDate = (timestamp) => {
   let date = new Date(timestamp);
@@ -141,15 +143,8 @@ const MessagesPage = () => {
                         <CardHeader>
                           <div className="font-bold text-lg">File</div>
                           <div className="flex-grow"></div>
-                          <Button
-                            color="primary"
-                            size="sm"
-                            onClick={() => {
-                              location.href = message.url;
-                            }}
-                          >
-                            <span className="icon-download3"></span> Download
-                          </Button>
+                          <ShareModal url={message.url} />
+                          <DownloadFile url={message.url} />
                           <DeleteMessage
                             messageId={message.message_id}
                             fetchMessages={fetchMessages}

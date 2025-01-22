@@ -16,7 +16,8 @@ const ViewMessage = ({ messageContent }) => {
   return (
     <>
       <Button color="default" size="sm" onClick={onOpen}>
-        <span className="icon-eye"></span> View
+        <span className="icon-eye"></span>
+        <span className="hidden md:inline">View</span>
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
         <ModalContent>

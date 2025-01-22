@@ -27,7 +27,8 @@ const CopyMessage = ({ messageContent }) => {
         onClick={copyToClipboard}
         isDisabled={buttonText === "Copied!"}
       >
-        <span className="icon-files-empty"></span> {buttonText}
+        <span className="icon-files-empty"></span>
+        <span className="hidden md:inline">{buttonText}</span>
       </Button>
     </>
   );

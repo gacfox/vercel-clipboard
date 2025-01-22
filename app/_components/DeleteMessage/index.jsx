@@ -36,7 +36,8 @@ const DeleteMessage = ({ messageId, fetchMessages }) => {
         isLoading={loading}
         onClick={deleteMessage}
       >
-        <span className="icon-bin"></span> Delete
+        <span className="icon-bin"></span>
+        <span className="hidden md:inline">Delete</span>
       </Button>
     </>
   );
