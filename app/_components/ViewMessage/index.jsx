@@ -8,14 +8,14 @@ import {
   ModalFooter,
   useDisclosure,
   ModalHeader,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 const ViewMessage = ({ messageContent }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   return (
     <>
-      <Button color="default" size="sm" onClick={onOpen}>
+      <Button color="default" size="sm" onPress={onOpen}>
         <span className="icon-eye"></span>
         <span className="hidden md:inline">View</span>
       </Button>
@@ -28,7 +28,7 @@ const ViewMessage = ({ messageContent }) => {
                 {messageContent}
               </ModalBody>
               <ModalFooter>
-                <Button color="default" onClick={onClose}>
+                <Button color="default" onPress={onClose}>
                   Close
                 </Button>
               </ModalFooter>

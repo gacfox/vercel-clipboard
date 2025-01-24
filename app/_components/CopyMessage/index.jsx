@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 
 const CopyMessage = ({ messageContent }) => {
   const [buttonText, setButtonText] = useState("Copy");
@@ -24,7 +24,7 @@ const CopyMessage = ({ messageContent }) => {
         color="primary"
         size="sm"
         className="ml-2"
-        onClick={copyToClipboard}
+        onPress={copyToClipboard}
         isDisabled={buttonText === "Copied!"}
       >
         <span className="icon-files-empty"></span>

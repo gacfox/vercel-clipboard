@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   Input,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useEffect, useState } from "react";
 
 const LoginPage = () => {
@@ -108,14 +108,14 @@ const LoginPage = () => {
         <CardFooter className="justify-end">
           <Button
             className={`${allow ? "inline-flex" : "hidden"}`}
-            onClick={handleRegister}
+            onPress={handleRegister}
           >
             Sign Up
           </Button>
           <Button
             color="primary"
             className="ml-2"
-            onClick={handleLogin}
+            onPress={handleLogin}
             isLoading={loginButtonLoading}
           >
             Sign In

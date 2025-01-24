@@ -8,7 +8,7 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useState, useEffect } from "react";
 import QRCode from "qrcode";
 
@@ -24,7 +24,7 @@ const ShareModal = ({ url }) => {
 
   return (
     <>
-      <Button size="sm" color="default" className="ml-2" onClick={onOpen}>
+      <Button size="sm" color="default" className="ml-2" onPress={onOpen}>
         <span className="icon-share2"></span>
         <span className="hidden md:inline">Share</span>
       </Button>

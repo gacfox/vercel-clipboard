@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 
 const DownloadFile = ({ url }) => {
   return (
@@ -9,7 +9,7 @@ const DownloadFile = ({ url }) => {
         color="primary"
         size="sm"
         className="ml-2"
-        onClick={() => {
+        onPress={() => {
           location.href = url;
         }}
       >

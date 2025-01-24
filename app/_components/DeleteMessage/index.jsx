@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 
 const DeleteMessage = ({ messageId, fetchMessages }) => {
   const router = useRouter();
@@ -34,7 +34,7 @@ const DeleteMessage = ({ messageId, fetchMessages }) => {
         size="sm"
         className="ml-2"
         isLoading={loading}
-        onClick={deleteMessage}
+        onPress={deleteMessage}
       >
         <span className="icon-bin"></span>
         <span className="hidden md:inline">Delete</span>

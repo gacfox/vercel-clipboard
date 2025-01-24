@@ -11,7 +11,7 @@ import {
   Button,
   useDisclosure,
   ModalHeader,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 const AddFileModal = ({ fetchMessages }) => {
   const router = useRouter();
@@ -68,7 +68,7 @@ const AddFileModal = ({ fetchMessages }) => {
 
   return (
     <>
-      <Button color="primary" className="w-[110px] ml-2" onClick={onOpen}>
+      <Button color="primary" className="w-[110px] ml-2" onPress={onOpen}>
         <span className="icon-plus"></span> File
       </Button>
       <Modal
@@ -88,12 +88,12 @@ const AddFileModal = ({ fetchMessages }) => {
                 <div className="text-red-500 text-sm">{errorMessage}</div>
               </ModalBody>
               <ModalFooter>
-                <Button color="default" onClick={onClose}>
+                <Button color="default" onPress={onClose}>
                   Close
                 </Button>
                 <Button
                   color="primary"
-                  onClick={handleSubmit}
+                  onPress={handleSubmit}
                   isLoading={submitLoading}
                 >
                   Upload

@@ -10,7 +10,7 @@ import {
   Button,
   useDisclosure,
   ModalHeader,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useState } from "react";
 
 const AddMessageModal = ({ fetchMessages }) => {
@@ -57,7 +57,7 @@ const AddMessageModal = ({ fetchMessages }) => {
 
   return (
     <>
-      <Button color="primary" className="w-[110px]" onClick={onOpen}>
+      <Button color="primary" className="w-[110px]" onPress={onOpen}>
         <span className="icon-plus"></span> Message
       </Button>
       <Modal
@@ -82,12 +82,12 @@ const AddMessageModal = ({ fetchMessages }) => {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="default" onClick={onClose}>
+                <Button color="default" onPress={onClose}>
                   Close
                 </Button>
                 <Button
                   color="primary"
-                  onClick={handleSubmit}
+                  onPress={handleSubmit}
                   isLoading={submitLoading}
                 >
                   Submit

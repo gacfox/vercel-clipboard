@@ -9,7 +9,7 @@ import {
   CardHeader,
   Divider,
   Spinner,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useState, useEffect } from "react";
 import AddMessageModal from "@/app/_components/AddMessageModal";
 import DeleteMessage from "@/app/_components/DeleteMessage";
@@ -97,7 +97,7 @@ const MessagesPage = () => {
             <Button
               color="primary"
               className="w-[110px] ml-2"
-              onClick={fetchMessages}
+              onPress={fetchMessages}
             >
               <span className="icon-loop2"></span> Refresh
             </Button>
