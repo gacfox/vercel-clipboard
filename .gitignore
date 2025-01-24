@@ -37,3 +37,10 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# JetBrains
+.idea/
+*.iml
+
+# VS Code
+.vscode/
