@@ -12,10 +12,10 @@ Vercel Clipboard is a simple web-based application that allows you to share text
 
 Before deploying the project to Vercel, make sure to create following necessary resources in your Vercel account and link them to your environment.
 
-- Blob Store: For uploading and downloading files
-- Upstash for Redis: For caching session data
-- Neon: For persisting structured data
-- Edge Config Store: For storing configuration settings
+- **Blob Store**: For uploading and downloading files
+- **Upstash for Redis**: For caching session data
+- **Neon**: For persisting structured data
+- **Edge Config Store**: For storing configuration settings
 
 Tips: If you deploy before creating storages and encounter application errors such as `vercel kv invocation failed`, try redeploying by clicking `Deployments -> Redeploy` button after creating and linking these storages.
 
