@@ -11,7 +11,7 @@ export const GET = async (request, { params }) => {
 
     // Query messages
     const { rows } =
-      await sql`select * from t_messages where user_id = ${user.user_id} and message_id = ${params.id}`;
+      await sql`select * from vc_messages where user_id = ${user.user_id} and message_id = ${params.id}`;
 
     return NextResponse.json({
       code: "200",
@@ -58,9 +58,9 @@ export const PUT = async (request, { params }) => {
 
     // Query messages
     const { rows } =
-      await sql`select * from t_messages where user_id = ${user.user_id} and message_id = ${params.id}`;
+      await sql`select * from vc_messages where user_id = ${user.user_id} and message_id = ${params.id}`;
     if (rows && rows.length > 0) {
-      await sql`update t_messages set type = ${type}, content = ${content}, filename = ${filename}, url = ${url}, update_time = now() where user_id = ${user.user_id} and message_id = ${params.id}`;
+      await sql`update vc_messages set type = ${type}, content = ${content}, filename = ${filename}, url = ${url}, update_time = now() where user_id = ${user.user_id} and message_id = ${params.id}`;
     }
 
     return NextResponse.json({
@@ -85,12 +85,12 @@ export const DELETE = async (request, { params }) => {
 
     // Query messages
     const { rows } =
-      await sql`select * from t_messages where user_id = ${user.user_id} and message_id = ${params.id}`;
+      await sql`select * from vc_messages where user_id = ${user.user_id} and message_id = ${params.id}`;
     if (rows && rows.length > 0) {
       if (rows[0].type === "file") {
         await del(rows[0].url);
       }
-      await sql`delete from t_messages where user_id = ${user.user_id} and message_id = ${params.id}`;
+      await sql`delete from vc_messages where user_id = ${user.user_id} and message_id = ${params.id}`;
     }
 
     return NextResponse.json({

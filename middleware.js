@@ -7,8 +7,8 @@ export const middleware = async (request) => {
   // Create tables if not inited
   const inited = await kv.get("tables-inited");
   if (!inited) {
-    await sql`create table if not exists t_messages (message_id serial primary key, type varchar(10) not null, content text, filename varchar(255), url varchar(2000), user_id int not null, create_time timestamp default now(), update_time timestamp default now())`;
-    await sql`create table if not exists t_users (user_id serial primary key, username varchar(20) not null, password varchar(64) not null)`;
+    await sql`create table if not exists vc_messages (message_id serial primary key, type varchar(10) not null, content text, filename varchar(255), url varchar(2000), user_id int not null, create_time timestamp default now(), update_time timestamp default now())`;
+    await sql`create table if not exists vc_users (user_id serial primary key, username varchar(20) not null, password varchar(64) not null)`;
     await kv.set("tables-inited", true);
   }
 

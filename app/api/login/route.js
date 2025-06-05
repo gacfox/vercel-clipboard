@@ -18,7 +18,7 @@ export const POST = async (request) => {
       hash.update(password);
       const passwordHash = hash.digest("hex");
       const { rows } =
-        await sql`select * from t_users where username=${username} and password=${passwordHash}`;
+        await sql`select * from vc_users where username=${username} and password=${passwordHash}`;
       if (rows.length === 0) {
         // Login failed
         return NextResponse.json({

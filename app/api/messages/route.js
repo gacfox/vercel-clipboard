@@ -11,7 +11,7 @@ export const GET = async () => {
 
     // Query messages
     const { rows } =
-      await sql`select * from t_messages where user_id = ${user.user_id} order by update_time desc`;
+      await sql`select * from vc_messages where user_id = ${user.user_id} order by update_time desc`;
     return NextResponse.json({
       code: "200",
       message: "Success",
@@ -56,12 +56,12 @@ export const POST = async (request) => {
     const user = JSON.parse(header.get("X-Middleware-Data"));
 
     // Add message record to database
-    await sql`insert into t_messages (type, content, filename, url, user_id) values (${type}, ${content}, ${filename}, ${url}, ${user.user_id})`;
+    await sql`insert into vc_messages (type, content, filename, url, user_id) values (${type}, ${content}, ${filename}, ${url}, ${user.user_id})`;
     const { rows } =
-      await sql`select count(*) from t_messages where user_id = ${user.user_id}`;
+      await sql`select count(*) from vc_messages where user_id = ${user.user_id}`;
     if (rows[0].count > 25) {
       const { rows: toDeleteRows } =
-        await sql`select * from t_messages where user_id = ${user.user_id} and message_id not in (select message_id from t_messages where user_id = ${user.user_id} order by update_time desc limit 25)`;
+        await sql`select * from vc_messages where user_id = ${user.user_id} and message_id not in (select message_id from vc_messages where user_id = ${user.user_id} order by update_time desc limit 25)`;
       if (toDeleteRows && toDeleteRows.length > 0) {
         for (const toDeleteRow of toDeleteRows) {
           if (toDeleteRow.type === "file") {
@@ -69,7 +69,7 @@ export const POST = async (request) => {
           }
         }
       }
-      await sql`delete from t_messages where user_id = ${user.user_id} and message_id not in (select message_id from t_messages where user_id = ${user.user_id} order by update_time desc limit 25)`;
+      await sql`delete from vc_messages where user_id = ${user.user_id} and message_id not in (select message_id from vc_messages where user_id = ${user.user_id} order by update_time desc limit 25)`;
     }
     return NextResponse.json({
       code: "200",

@@ -23,7 +23,7 @@ export const POST = async (request) => {
       }
 
       const { rows } =
-        await sql`select * from t_users where username=${username}`;
+        await sql`select * from vc_users where username=${username}`;
       if (rows.length > 0) {
         return NextResponse.json({
           code: "400",
@@ -35,7 +35,7 @@ export const POST = async (request) => {
       const hash = crypto.createHash("sha256");
       hash.update(password);
       const passwordHash = hash.digest("hex");
-      await sql`insert into t_users (username, password) values (${username}, ${passwordHash})`;
+      await sql`insert into vc_users (username, password) values (${username}, ${passwordHash})`;
       return NextResponse.json({
         code: "200",
         message: "Success",
