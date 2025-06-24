@@ -92,6 +92,7 @@ const LoginPage = () => {
               label="Username"
               value={username}
               onValueChange={setUsername}
+              isInvalid={usernameErrorMessage !== ""}
               errorMessage={usernameErrorMessage}
             />
           </div>
@@ -101,6 +102,7 @@ const LoginPage = () => {
               label="Password"
               value={password}
               onValueChange={setPassword}
+              isInvalid={passwordErrorMessage !== ""}
               errorMessage={passwordErrorMessage}
             />
           </div>

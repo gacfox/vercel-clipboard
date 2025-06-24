@@ -79,6 +79,7 @@ const RegisterPage = () => {
               label="Username"
               value={username}
               onValueChange={setUsername}
+              isInvalid={usernameErrorMessage !== ""}
               errorMessage={usernameErrorMessage}
             />
           </div>
@@ -88,6 +89,7 @@ const RegisterPage = () => {
               label="Password"
               value={password}
               onValueChange={setPassword}
+              isInvalid={passwordErrorMessage !== ""}
               errorMessage={passwordErrorMessage}
             />
           </div>
@@ -97,6 +99,7 @@ const RegisterPage = () => {
               label="Retype your password"
               value={rePassword}
               onValueChange={setRePassword}
+              isInvalid={rePasswordErrorMessage !== ""}
               errorMessage={rePasswordErrorMessage}
             />
           </div>
