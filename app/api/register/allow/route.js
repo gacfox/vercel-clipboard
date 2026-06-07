@@ -3,7 +3,7 @@ import { get } from "@vercel/edge-config";
 
 export const POST = async () => {
   try {
-    let allow = await get("allowRegister");
+    let allow = await get("vc-allow-register");
     if (allow !== true) {
       allow = false;
     }

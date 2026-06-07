@@ -13,7 +13,7 @@ export const POST = async (request) => {
     password.length <= 20
   ) {
     try {
-      let allow = await get("allowRegister");
+      let allow = await get("vc-allow-register");
       if (allow !== true) {
         return NextResponse.json({
           code: "400",

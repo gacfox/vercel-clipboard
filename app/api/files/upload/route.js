@@ -11,7 +11,7 @@ export async function POST(request) {
       onBeforeGenerateToken: async (pathname, clientPayload) => {
         const { token } = JSON.parse(clientPayload);
         if (token) {
-          const user = await kv.get(`token-${token}`);
+          const user = await kv.get(`vc:token-${token}`);
           if (!user) {
             return NextResponse.json({
               code: "403",

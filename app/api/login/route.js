@@ -36,7 +36,7 @@ export const POST = async (request) => {
         // Write a token to response
         const user = rows[0];
         const uuid = uuidv4();
-        await kv.set(`token-${uuid}`, user, {
+        await kv.set(`vc:token-${uuid}`, user, {
           ex: process.env.TOKEN_EXPIRES_SECONDS
             ? parseInt(process.env.TOKEN_EXPIRES_SECONDS)
             : 31536000,

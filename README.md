@@ -33,4 +33,4 @@ npm install && npx vercel env pull .env.development.local && npm run dev
 
 ## Configurations
 
-This project is designed for multiple users. If you'd like to allow others to register, enable the registration page by setting `allowRegister` to `true` in the Edge Config Store.
+This project is designed for multiple users. If you'd like to allow others to register, enable the registration page by setting `vc-allow-register` to `true` in the Edge Config Store.
