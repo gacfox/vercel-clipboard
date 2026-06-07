@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
 import { useState } from "react";
 
-const AddFileLayer = ({ hideLayer, fetchMessages }) => {
+const AddFileLayer = ({ hideLayer, fetchMessages, onAdded }) => {
   const router = useRouter();
   const [submitLoading, setSubmitLoading] = useState(false);
 
@@ -38,7 +38,8 @@ const AddFileLayer = ({ hideLayer, fetchMessages }) => {
       router.push("/login");
     } else {
       hideLayer();
-      await fetchMessages();
+      onAdded();
+      await fetchMessages(false);
     }
   };
 

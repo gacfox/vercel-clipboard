@@ -13,7 +13,7 @@ import {
   ModalHeader,
 } from "@heroui/react";
 
-const AddFileModal = ({ fetchMessages }) => {
+const AddFileModal = ({ fetchMessages, onAdded }) => {
   const router = useRouter();
 
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -38,7 +38,8 @@ const AddFileModal = ({ fetchMessages }) => {
     setSubmitLoading(false);
     if (data?.code === "200") {
       onClose();
-      await fetchMessages();
+      onAdded();
+      await fetchMessages(false);
     } else {
       if (data.code === "403") {
         router.push("/login");

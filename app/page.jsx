@@ -8,6 +8,7 @@ import {
   CardFooter,
   CardHeader,
   Divider,
+  Skeleton,
   Spinner,
 } from "@heroui/react";
 import { useState, useEffect } from "react";
@@ -40,23 +41,35 @@ const MessagesPage = () => {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
   const [showAddFileLayer, setShowAddFileLayer] = useState(false);
+  const [deletingIds, setDeletingIds] = useState(new Set());
+  const [showSkeleton, setShowSkeleton] = useState(false);
 
-  const fetchMessages = async () => {
-    setLoading(true);
+  const fetchMessages = async (showSpinner = true) => {
+    if (showSpinner) setLoading(true);
     const response = await fetch("/api/messages", {
       headers: {
         "X-Session-ID": localStorage.getItem("token"),
       },
     });
     const data = await response.json();
-    setLoading(false);
+    if (showSpinner) setLoading(false);
     if (data?.data) {
       setMessages(data.data);
+      setDeletingIds(new Set());
+      setShowSkeleton(false);
     } else {
       if (data.code === "403") {
         router.push("/login");
       }
     }
+  };
+
+  const markDeleting = (messageId) => {
+    setDeletingIds((prev) => new Set(prev).add(messageId));
+  };
+
+  const onAdded = () => {
+    setShowSkeleton(true);
   };
 
   useEffect(() => {
@@ -87,13 +100,14 @@ const MessagesPage = () => {
         <AddFileLayer
           hideLayer={() => setShowAddFileLayer(false)}
           fetchMessages={fetchMessages}
+          onAdded={onAdded}
         />
       )}
       <div className="container mx-auto px-4 overflow-hidden">
         <div className="grid grid-cols-12 gap-2 my-2">
           <div className="flex justify-center col-span-12">
-            <AddMessageModal fetchMessages={fetchMessages} />
-            <AddFileModal fetchMessages={fetchMessages} />
+            <AddMessageModal fetchMessages={fetchMessages} onAdded={onAdded} />
+            <AddFileModal fetchMessages={fetchMessages} onAdded={onAdded} />
             <Button
               color="primary"
               className="w-[110px] ml-2"
@@ -111,16 +125,39 @@ const MessagesPage = () => {
             </div>
           ) : (
             <>
-              {messages?.length === 0 ? (
+              {messages?.length === 0 && !showSkeleton ? (
                 <div className="col-span-12 text-center text-gray-400">
                   Click Message or File button to push a message
                 </div>
               ) : null}
+              {showSkeleton && (
+                <Card className="col-span-12">
+                  <CardHeader>
+                    <Skeleton className="w-16 h-6 rounded-lg" />
+                  </CardHeader>
+                  <Divider />
+                  <CardBody>
+                    <Skeleton className="w-full h-20 rounded-lg" />
+                  </CardBody>
+                  <CardFooter>
+                    <Skeleton className="w-32 h-4 rounded-lg" />
+                  </CardFooter>
+                </Card>
+              )}
               {messages.map((message, index) => {
                 const timestamp = new Date(message.update_time);
                 const readableDate = formatDate(timestamp);
+                const isDeleting = deletingIds.has(message.message_id);
                 return (
-                  <Card key={index} className="col-span-12" isHoverable={true}>
+                  <Card
+                    key={index}
+                    className={`col-span-12 transition-all duration-200 ${
+                      isDeleting
+                        ? "opacity-40 blur-[1px] pointer-events-none"
+                        : ""
+                    }`}
+                    isHoverable={!isDeleting}
+                  >
                     {message.type === "text" ? (
                       <>
                         <CardHeader>
@@ -131,6 +168,7 @@ const MessagesPage = () => {
                           <DeleteMessage
                             messageId={message.message_id}
                             fetchMessages={fetchMessages}
+                            markDeleting={markDeleting}
                           />
                         </CardHeader>
                         <Divider />
@@ -148,6 +186,7 @@ const MessagesPage = () => {
                           <DeleteMessage
                             messageId={message.message_id}
                             fetchMessages={fetchMessages}
+                            markDeleting={markDeleting}
                           />
                         </CardHeader>
                         <Divider />

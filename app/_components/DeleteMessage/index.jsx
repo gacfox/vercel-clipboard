@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@heroui/react";
 
-const DeleteMessage = ({ messageId, fetchMessages }) => {
+const DeleteMessage = ({ messageId, fetchMessages, markDeleting }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +19,8 @@ const DeleteMessage = ({ messageId, fetchMessages }) => {
     const data = await response.json();
     setLoading(false);
     if (data?.code === "200") {
-      fetchMessages();
+      markDeleting(messageId);
+      fetchMessages(false);
     } else {
       if (data.code === "403") {
         router.push("/login");

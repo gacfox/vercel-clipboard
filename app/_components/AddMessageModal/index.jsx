@@ -13,7 +13,7 @@ import {
 } from "@heroui/react";
 import { useState } from "react";
 
-const AddMessageModal = ({ fetchMessages }) => {
+const AddMessageModal = ({ fetchMessages, onAdded }) => {
   const router = useRouter();
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -45,8 +45,10 @@ const AddMessageModal = ({ fetchMessages }) => {
     const data = await response.json();
     setSubmitLoading(false);
     if (data?.code === "200") {
+      setContent("");
       onClose();
-      fetchMessages();
+      onAdded();
+      fetchMessages(false);
     } else {
       if (data.code === "403") {
         router.push("/login");
