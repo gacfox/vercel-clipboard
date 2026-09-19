@@ -17,7 +17,6 @@ import DeleteMessage from "@/app/_components/DeleteMessage";
 import ViewMessage from "@/app/_components/ViewMessage";
 import CopyMessage from "@/app/_components/CopyMessage";
 import AddFileModal from "@/app/_components/AddFileModal";
-import AddFileLayer from "@/app/_components/AddFileLayer";
 import DownloadFile from "@/app/_components/DownloadFile";
 import ShareModal from "@/app/_components/ShareModal";
 
@@ -40,7 +39,6 @@ const MessagesPage = () => {
 
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
-  const [showAddFileLayer, setShowAddFileLayer] = useState(false);
   const [deletingIds, setDeletingIds] = useState(new Set());
   const [showSkeleton, setShowSkeleton] = useState(false);
 
@@ -78,9 +76,6 @@ const MessagesPage = () => {
 
   const [vh, setVh] = useState("100vh");
   useEffect(() => {
-    const handleBodyDragEnter = () => setShowAddFileLayer(true);
-    window.addEventListener("dragenter", handleBodyDragEnter);
-
     let minHeight = window.innerHeight - 80;
     minHeight < 100 ? (minHeight = 100) : null;
     setVh(minHeight + "px");
@@ -96,13 +91,6 @@ const MessagesPage = () => {
 
   return (
     <>
-      {showAddFileLayer && (
-        <AddFileLayer
-          hideLayer={() => setShowAddFileLayer(false)}
-          fetchMessages={fetchMessages}
-          onAdded={onAdded}
-        />
-      )}
       <div className="container mx-auto px-4 overflow-hidden">
         <div className="grid grid-cols-12 gap-2 my-2">
           <div className="flex justify-center col-span-12">

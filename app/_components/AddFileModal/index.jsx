@@ -13,6 +13,12 @@ import {
   ModalHeader,
 } from "@heroui/react";
 
+const formatFileSize = (bytes) => {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
+
 const AddFileModal = ({ fetchMessages, onAdded }) => {
   const router = useRouter();
 
@@ -20,6 +26,44 @@ const AddFileModal = ({ fetchMessages, onAdded }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const inputFileRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const handleSelectFile = (file) => {
+    setSelectedFile(file);
+    setErrorMessage("");
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleSelectFile(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setIsDragOver(false);
+    }
+  };
+
+  const handleModalDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   const submitMessage = async (blob) => {
     const response = await fetch("/api/messages", {
@@ -50,10 +94,13 @@ const AddFileModal = ({ fetchMessages, onAdded }) => {
 
   const handleSubmit = async () => {
     setErrorMessage("");
+    if (!selectedFile) {
+      setErrorMessage("Please select a file");
+      return;
+    }
     setSubmitLoading(true);
     try {
-      const file = inputFileRef.current.files[0];
-      const blob = await upload(file.name, file, {
+      const blob = await upload(selectedFile.name, selectedFile, {
         access: "public",
         handleUploadUrl: "/api/files/upload",
         clientPayload: JSON.stringify({
@@ -75,17 +122,71 @@ const AddFileModal = ({ fetchMessages, onAdded }) => {
       <Modal
         isOpen={isOpen}
         onOpenChange={() => {
-          inputFileRef.current.value = "";
+          setSelectedFile(null);
+          setErrorMessage("");
+          setIsDragOver(false);
           onOpenChange();
         }}
         size="xl"
       >
-        <ModalContent>
+        <ModalContent onDragOver={handleModalDrop} onDrop={handleModalDrop}>
           {(onClose) => (
             <>
               <ModalHeader>Upload your file here</ModalHeader>
               <ModalBody>
-                <input name="file" ref={inputFileRef} type="file" required />
+                <div
+                  onDragEnter={handleDragEnter}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onClick={() => inputFileRef.current?.click()}
+                  className={`flex flex-col items-center justify-center gap-2 h-44 px-4 border-2 border-dashed rounded-xl cursor-pointer select-none transition-all duration-200 ${
+                    isDragOver
+                      ? "border-primary bg-primary/5 scale-[1.02]"
+                      : "border-default-300 hover:border-primary-300 hover:bg-default-50"
+                  }`}
+                >
+                  <input
+                    name="file"
+                    ref={inputFileRef}
+                    type="file"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleSelectFile(file);
+                      e.target.value = "";
+                    }}
+                  />
+                  {isDragOver ? (
+                    <>
+                      <span className="icon-files-empty text-4xl text-primary"></span>
+                      <div className="text-sm font-medium text-primary">
+                        Drop to select your file
+                      </div>
+                    </>
+                  ) : selectedFile ? (
+                    <>
+                      <span className="icon-files-empty text-4xl text-primary"></span>
+                      <div className="text-sm font-medium max-w-full truncate">
+                        {selectedFile.name}
+                      </div>
+                      <div className="text-xs text-default-400">
+                        {formatFileSize(selectedFile.size)} · Click to
+                        re-choose
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <span className="icon-files-empty text-4xl text-default-400"></span>
+                      <div className="text-sm font-medium text-default-500">
+                        Drag & drop your file here
+                      </div>
+                      <div className="text-xs text-default-400">
+                        or click to browse
+                      </div>
+                    </>
+                  )}
+                </div>
                 <div className="text-red-500 text-sm">{errorMessage}</div>
               </ModalBody>
               <ModalFooter>
