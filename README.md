@@ -6,7 +6,7 @@ Vercel Clipboard is a simple web-based application that allows you to share text
 
 ## Screenshots
 
-![](doc/screenshot.webp)
+![](https://github.com/user-attachments/assets/39599784-7f47-4818-82cb-103ba665ecd9)
 
 ## Requirements
 
